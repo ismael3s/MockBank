@@ -1,0 +1,11 @@
+@base_rul=http://localhost:3000
+
+POST http://localhost:3000/clientes
+Content-Type: application/json
+
+{
+    "fullName": "John Doe",
+    "birthDate": "2000/05/12",
+    "document": "07242927560"
+}
+###

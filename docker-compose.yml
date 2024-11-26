@@ -1,0 +1,12 @@
+services:
+  postgres:
+    container_name: MockBank.Postgres
+    image: postgres:17
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./.docker/Postgres/.docker:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: mock_bank
