@@ -7,6 +7,7 @@ import { BankAccount } from 'src/domain/entities/bank-account/bank-account';
 import { IBankAccountRepository } from 'src/domain/entities/bank-account/ibank-account.repository.interface';
 import { Sequelize } from 'sequelize-typescript';
 import { Document } from 'src/domain/vo/document';
+import { BankAccountNumber } from 'src/domain/vo/bank-account-number';
 
 @Injectable()
 export class CustomerRepository implements ICustomerRepository {
@@ -88,5 +89,52 @@ export class BankAccountRepository implements IBankAccountRepository {
         transaction,
       },
     );
+  }
+
+  async update(bankAccount: BankAccount): Promise<void> {
+    await this.repository.update(
+      {
+        status: bankAccount.getStatus(),
+        balance: bankAccount.getBalance(),
+        updatedAt: new Date(),
+      },
+      {
+        where: {
+          id: bankAccount.id,
+        },
+      },
+    );
+  }
+
+  async findById(id: string): Promise<BankAccount | null> {
+    const bankAccount = await this.repository.findByPk(id, {
+      lock: Transaction.LOCK.UPDATE,
+      include: [
+        {
+          model: CustomerModel,
+          required: true,
+        },
+      ],
+    });
+    if (!bankAccount) return null;
+    const customerModel = bankAccount.dataValues.customer;
+    const customer = Customer.restore({
+      bankAccounts: [],
+      birthDate: customerModel.dataValues.birthDate,
+      createdAt: customerModel.dataValues.createdAt,
+      document: customerModel.dataValues.document,
+      fullName: customerModel.dataValues.fullName,
+      id: customerModel.dataValues.id,
+    });
+    return BankAccount.restore({
+      id: bankAccount.dataValues.id,
+      status: bankAccount.dataValues.status,
+      number: bankAccount.dataValues.number,
+      customer: customer,
+      transactions: [],
+      createdAt: bankAccount.dataValues.createdAt,
+      updatedAt: bankAccount.dataValues.updatedAt,
+      balance: bankAccount.dataValues.balance || 0,
+    });
   }
 }

@@ -69,8 +69,10 @@ export class Customer extends Entity {
     return customer;
   }
 
-  public addBankAccount(): void {
-    this.bankAccounts.push(BankAccount.create(this));
+  public addBankAccount(): BankAccount {
+    const bankAccount = BankAccount.create(this);
+    this.bankAccounts.push(bankAccount);
+    return bankAccount;
   }
 
   public getFullName(): FullName {

@@ -9,10 +9,8 @@ import {
 } from 'src/infra/persistence/sequelize/repositories/customer.repository';
 import { UnitOfWork } from 'src/infra/persistence/sequelize/unit-of-work';
 import { IntegrationTestHelpers } from 'src/modules/shared/test-helpers/integration/setup-test-container';
-import {
-  FindCustomerQuery,
-  FindCustomerQueryHandler,
-} from './find-customer.query-handler';
+import { FindCustomerQueryHandler } from './find-customer.query-handler';
+import { FindCustomerQuery } from './find-customer-query';
 import { uuidv7 } from 'uuidv7';
 import { OpenAccountCommandHandler } from 'src/application/commands/open-account/open-account.command-handler';
 import { OpenAccountCommandHandlerFixture } from 'src/application/commands/open-account/open-account.command-handler.integration.spec';

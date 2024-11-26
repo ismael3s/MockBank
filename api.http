@@ -9,3 +9,9 @@ Content-Type: application/json
     "document": "07242927560"
 }
 ###
+
+GET http://localhost:3000/clientes/01936623-f68a-75cd-9641-dc007a41c4e7
+Content-Type: application/json
+
+
+###

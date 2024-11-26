@@ -16,6 +16,7 @@ import {
   BankAccountRepository,
   CustomerRepository,
 } from './infra/persistence/sequelize/repositories/customer.repository';
+import { QueriesHandlers } from './application/queries';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import {
   ],
   providers: [
     ...CommandHandlers,
+    ...QueriesHandlers,
     {
       provide: 'UnitOfWork',
       useClass: UnitOfWork,

@@ -1,11 +1,10 @@
+import { Inject } from '@nestjs/common';
+import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { IUnitOfWork } from 'src/application/abstractions/iunit-of-work.interface';
 import { IBankAccountRepository } from 'src/domain/entities/bank-account/ibank-account.repository.interface';
 import { Customer } from 'src/domain/entities/customer/customer';
 import { ICustomerRepository } from 'src/domain/entities/customer/icustomer.repository.interface';
 import { OpenAccountCommand } from './open-account.command';
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
-import { Inject } from '@nestjs/common';
-import { UnitOfWork } from 'src/infra/persistence/sequelize/unit-of-work';
 
 @CommandHandler(OpenAccountCommand)
 export class OpenAccountCommandHandler

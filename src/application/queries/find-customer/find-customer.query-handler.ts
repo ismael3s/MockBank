@@ -1,10 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { ICustomerRepository } from 'src/domain/entities/customer/icustomer.repository.interface';
-
-export class FindCustomerQuery {
-  constructor(public id: string) {}
-}
+import { FindCustomerQuery } from './find-customer-query';
 
 @QueryHandler(FindCustomerQuery)
 export class FindCustomerQueryHandler

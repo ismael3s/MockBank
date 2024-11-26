@@ -52,6 +52,10 @@ export class Transaction extends Entity {
     return this.amount;
   }
 
+  getType() {
+    return this.type;
+  }
+
   isDeposit() {
     return this.type === TransactionType.Deposit;
   }

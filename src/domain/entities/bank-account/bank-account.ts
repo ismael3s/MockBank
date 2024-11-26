@@ -55,6 +55,7 @@ export class BankAccount extends Entity {
     bankAccount.updatedAt = input.updatedAt;
     bankAccount.balance = input.balance;
     bankAccount.transactions = input.transactions;
+    bankAccount.customer = input.customer;
     return bankAccount;
   }
 
@@ -75,6 +76,10 @@ export class BankAccount extends Entity {
     }, this.balance);
   }
 
+  public getTransactions(): ReadonlyArray<Transaction> {
+    return this.transactions;
+  }
+
   public getCreatedAt(): Date {
     return this.createdAt;
   }
@@ -92,7 +97,15 @@ export class BankAccount extends Entity {
   }
 
   public inactivate() {
+    if (this.status === BankAccountStatus.Inactive)
+      throw new Error('Conta já está inativa');
     this.status = BankAccountStatus.Inactive;
+  }
+
+  public active() {
+    if (this.status === BankAccountStatus.Active)
+      throw new Error('Conta já está ativa');
+    this.status = BankAccountStatus.Active;
   }
 
   public getNumber(): BankAccountNumber {
