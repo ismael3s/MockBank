@@ -31,6 +31,10 @@ export class TransactionDomainService {
     to: BankAccount,
     amount: number,
   ): void {
+    if (from.id === to.id)
+      throw new Error(
+        'Não é possível realizar transferências para a mesma conta',
+      );
     if (!from.isActive() || !to.isActive())
       throw new Error(
         'Não é possível realizar transações em uma conta inativa',

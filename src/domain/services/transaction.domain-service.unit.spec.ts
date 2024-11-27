@@ -147,5 +147,15 @@ describe('TransactionDomainService', () => {
         ),
       ).toThrow('Saldo insuficiente');
     });
+
+    test('Não deve ser possivel realizar uma transferência para a mesma conta bancária', () => {
+      const bankAccount = BankAccountTestFixture.createActiveBankAccount();
+      const amount = 100;
+      TransactionDomainService.deposit(bankAccount, amount);
+
+      expect(() =>
+        TransactionDomainService.transfer(bankAccount, bankAccount, amount),
+      ).toThrow('Não é possível realizar transferências para a mesma conta');
+    });
   });
 });
