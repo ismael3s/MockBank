@@ -16,7 +16,7 @@ import { TransactionType } from 'src/domain/entities/bank-account/transaction';
 import { WithdrawFromBankAccountCommandHandler } from './withdraw-from-bank-account.command-handler';
 import { DepositInBankAccountCommandHandler } from '../deposit-in-bank-account/deposit-in-bank-account.command-handler';
 
-describe('DepositInBankAccountCommandHandler', () => {
+describe('WithdrawnFromBankAccountCommandHandler', () => {
   const containers = IntegrationTestHelpers.setupTestContainer();
   let sut: WithdrawFromBankAccountCommandHandler;
   let depositInBankAccountCommandHandler: DepositInBankAccountCommandHandler;
