@@ -114,7 +114,7 @@ export class BankAccountRepository implements IBankAccountRepository {
           id: transaction.id,
           amount: transaction.getAmount(),
           type: transaction.getType(),
-          fromBankAccountId: bankAccount.id,
+          fromBankAccountId: transaction.getFrom(),
           toBankAccountId: transaction.getTo(),
           createdAt: new Date(),
         },
