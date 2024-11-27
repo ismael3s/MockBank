@@ -2,10 +2,8 @@ import { IntegrationTestHelpers } from 'src/modules/shared/test-helpers/integrat
 import { Test, TestingModule } from '@nestjs/testing';
 import { Sequelize } from 'sequelize-typescript';
 import { UnitOfWork } from 'src/infra/persistence/sequelize/unit-of-work';
-import {
-  BankAccountRepository,
-  CustomerRepository,
-} from 'src/infra/persistence/sequelize/repositories/customer.repository';
+import { CustomerRepository } from 'src/infra/persistence/sequelize/repositories/customer.repository';
+import { BankAccountRepository } from 'src/infra/persistence/sequelize/repositories/bank-account-repository';
 import { uuidv7 } from 'uuidv7';
 import { ChangeBankAccountStatusCommandHandler } from 'src/application/commands/change-bank-account-status/change-bank-account-status.command-handler';
 import { OpenAccountCommandHandler } from 'src/application/commands/open-account/open-account.command-handler';

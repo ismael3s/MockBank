@@ -3,10 +3,8 @@ import { AddAccountCommandHandler } from './add-account.command-handler';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Sequelize } from 'sequelize-typescript';
 import { UnitOfWork } from 'src/infra/persistence/sequelize/unit-of-work';
-import {
-  BankAccountRepository,
-  CustomerRepository,
-} from 'src/infra/persistence/sequelize/repositories/customer.repository';
+import { CustomerRepository } from 'src/infra/persistence/sequelize/repositories/customer.repository';
+import { BankAccountRepository } from 'src/infra/persistence/sequelize/repositories/bank-account-repository';
 import { uuidv7 } from 'uuidv7';
 import { OpenAccountCommandHandler } from '../open-account/open-account.command-handler';
 import { OpenAccountCommandHandlerFixture } from '../open-account/open-account.command-handler.integration.spec';

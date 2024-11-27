@@ -12,10 +12,8 @@ import { AppController } from './app.controller';
 import { CqrsModule } from '@nestjs/cqrs';
 import { CommandHandlers } from './application/commands';
 import { UnitOfWork } from './infra/persistence/sequelize/unit-of-work';
-import {
-  BankAccountRepository,
-  CustomerRepository,
-} from './infra/persistence/sequelize/repositories/customer.repository';
+import { CustomerRepository } from './infra/persistence/sequelize/repositories/customer.repository';
+import { BankAccountRepository } from './infra/persistence/sequelize/repositories/bank-account-repository';
 import { QueriesHandlers } from './application/queries';
 
 @Module({

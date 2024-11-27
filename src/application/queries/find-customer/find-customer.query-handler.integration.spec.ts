@@ -3,10 +3,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { Sequelize } from 'sequelize-typescript';
 import { BankAccountStatus } from 'src/domain/entities/bank-account/bank-account';
 import { CustomerTestFixture } from 'src/domain/entities/bank-account/bank-account.unit.spec';
-import {
-  BankAccountRepository,
-  CustomerRepository,
-} from 'src/infra/persistence/sequelize/repositories/customer.repository';
+import { CustomerRepository } from 'src/infra/persistence/sequelize/repositories/customer.repository';
+import { BankAccountRepository } from 'src/infra/persistence/sequelize/repositories/bank-account-repository';
 import { UnitOfWork } from 'src/infra/persistence/sequelize/unit-of-work';
 import { IntegrationTestHelpers } from 'src/modules/shared/test-helpers/integration/setup-test-container';
 import { FindCustomerQueryHandler } from './find-customer.query-handler';
