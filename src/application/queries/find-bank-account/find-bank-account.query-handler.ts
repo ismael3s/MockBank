@@ -28,6 +28,8 @@ export class FindBankAccountQueryHandler
         id: transaction.id,
         amount: transaction.getAmount(),
         type: transaction.getType(),
+        createdAt: transaction.getCreatedAt(),
+        toAccountId: transaction.getTo(),
       })),
     };
   }
@@ -46,5 +48,7 @@ type Output = {
     id: string;
     amount: number;
     type: string;
+    toAccountId?: string;
+    createdAt: Date;
   }[];
 };

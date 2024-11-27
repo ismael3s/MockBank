@@ -60,16 +60,18 @@ export class BankAccount extends Entity {
     bankAccount.createdAt = input.createdAt;
     bankAccount.updatedAt = input.updatedAt;
     bankAccount.balance = input.balance;
-    bankAccount.transactions = input.transactions.map((transaction) =>
-      Transaction.restore({
-        id: transaction.id,
-        amount: transaction.amount,
-        type: transaction.type as TransactionType,
-        to: transaction.to.id,
-        from: bankAccount.id,
-        createdAt: transaction.createdAt,
-      }),
-    );
+    bankAccount.transactions = input.transactions
+      .map((transaction) =>
+        Transaction.restore({
+          id: transaction.id,
+          amount: transaction.amount,
+          type: transaction.type as TransactionType,
+          to: transaction.to.id,
+          from: bankAccount.id,
+          createdAt: transaction.createdAt,
+        }),
+      )
+      .sort((a, b) => b.getCreatedAt().getTime() - a.getCreatedAt().getTime());
     bankAccount.customer = input.customer;
     return bankAccount;
   }

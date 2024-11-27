@@ -85,6 +85,10 @@ export class IntegrationTestHelpers {
       await container.stop();
     });
 
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
     return {
       get postgreSqlContainer() {
         return container;

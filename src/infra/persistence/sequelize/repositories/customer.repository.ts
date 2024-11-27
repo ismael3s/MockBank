@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Model, Transaction } from 'sequelize';
+import { Model, Op, Transaction } from 'sequelize';
 import { Sequelize } from 'sequelize-typescript';
 import { BankAccount } from 'src/domain/entities/bank-account/bank-account';
 import { IBankAccountRepository } from 'src/domain/entities/bank-account/ibank-account.repository.interface';
@@ -109,19 +109,19 @@ export class BankAccountRepository implements IBankAccountRepository {
     );
 
     for (const transaction of bankAccount.getTransactions()) {
-      await this.sequelize.models.TransactionModel.upsert(
-        {
+      await this.sequelize.models.TransactionModel.findOrCreate({
+        where: {
+          id: transaction.id,
+        },
+        defaults: {
           id: transaction.id,
           amount: transaction.getAmount(),
           type: transaction.getType(),
           fromBankAccountId: transaction.getFrom(),
           toBankAccountId: transaction.getTo(),
-          createdAt: new Date(),
+          createdAt: transaction.getCreatedAt(),
         },
-        {
-          conflictFields: ['id'],
-        },
-      );
+      });
     }
   }
 
@@ -136,25 +136,46 @@ export class BankAccountRepository implements IBankAccountRepository {
       ],
     });
     if (!bankAccount) return null;
-    const transactions = await this.sequelize.models.TransactionModel.findAll<
-      Model<TransactionModel, TransactionModel>
-    >({
-      where: {
-        fromBankAccountId: id,
-      },
-      include: [
-        {
-          model: BankAccountModel,
-          as: 'fromBankAccount',
-          required: true,
+    const transactionsSent =
+      await this.sequelize.models.TransactionModel.findAll<
+        Model<TransactionModel, TransactionModel>
+      >({
+        where: {
+          fromBankAccountId: id,
         },
-        {
-          model: BankAccountModel,
-          as: 'toBankAccount',
-          required: false,
+        include: [
+          {
+            model: BankAccountModel,
+            as: 'fromBankAccount',
+            required: true,
+          },
+          {
+            model: BankAccountModel,
+            as: 'toBankAccount',
+            required: false,
+          },
+        ],
+      });
+    const transactionsReceived =
+      await this.sequelize.models.TransactionModel.findAll<
+        Model<TransactionModel, TransactionModel>
+      >({
+        where: {
+          toBankAccountId: id,
         },
-      ],
-    });
+        include: [
+          {
+            model: BankAccountModel,
+            as: 'fromBankAccount',
+            required: true,
+          },
+          {
+            model: BankAccountModel,
+            as: 'toBankAccount',
+            required: false,
+          },
+        ],
+      });
     const customerModel = bankAccount.dataValues.customer;
     const customer = Customer.restore({
       bankAccounts: [],
@@ -169,15 +190,17 @@ export class BankAccountRepository implements IBankAccountRepository {
       status: bankAccount.dataValues.status,
       number: bankAccount.dataValues.number,
       customer: customer,
-      transactions: transactions.map((transaction) => ({
-        id: transaction.dataValues.id,
-        amount: Number(transaction.dataValues.amount),
-        type: transaction.dataValues.type,
-        createdAt: transaction.dataValues.createdAt,
-        to: {
-          id: transaction.dataValues.toBankAccountId,
-        },
-      })),
+      transactions: [...transactionsReceived, ...transactionsSent].map(
+        (transaction) => ({
+          id: transaction.dataValues.id,
+          amount: Number(transaction.dataValues.amount),
+          type: transaction.dataValues.type,
+          createdAt: transaction.dataValues.createdAt,
+          to: {
+            id: transaction.dataValues.toBankAccountId,
+          },
+        }),
+      ),
       createdAt: bankAccount.dataValues.createdAt,
       updatedAt: bankAccount.dataValues.updatedAt,
       balance: bankAccount.dataValues.balance || 0,
