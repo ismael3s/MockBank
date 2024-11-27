@@ -1,4 +1,7 @@
 'use strict';
+
+import { TransactionType } from 'src/domain/entities/bank-account/transaction';
+
 const { Sequelize } = require('sequelize');
 
 /** @type {import('sequelize-cli').Migration} */
@@ -71,6 +74,50 @@ module.exports = {
         defaultValue: Sequelize.fn('now'),
       },
     });
+    await queryInterface.createTable('transactions', {
+      id: {
+        type: Sequelize.UUID,
+        primaryKey: true,
+        allowNull: false,
+      },
+      from_bank_account_id: {
+        type: Sequelize.UUID,
+        allowNull: false,
+        references: {
+          model: 'bank_accounts',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+      },
+      to_bank_account_id: {
+        type: Sequelize.UUID,
+        allowNull: true,
+        references: {
+          model: 'bank_accounts',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+      },
+      amount: {
+        type: Sequelize.BIGINT,
+        allowNull: false,
+      },
+      type: {
+        type: Sequelize.ENUM(
+          TransactionType.Deposit,
+          TransactionType.Transfer,
+          TransactionType.Withdraw,
+        ),
+        allowNull: false,
+      },
+      created_at: {
+        type: Sequelize.DATE,
+        allowNull: false,
+        defaultValue: Sequelize.fn('now'),
+      },
+    });
     await queryInterface.addIndex('bank_accounts', ['number']);
     await queryInterface.addIndex('customers', ['document']);
   },
@@ -79,6 +126,7 @@ module.exports = {
     await queryInterface.removeIndex('customers', ['document']);
     await queryInterface.removeIndex('bank_accounts', ['number']);
     await queryInterface.removeColumn('bank_accounts', 'customer_id');
+    await queryInterface.dropTable('transactions');
     await queryInterface.dropTable('customers');
     await queryInterface.dropTable('bank_accounts');
   },

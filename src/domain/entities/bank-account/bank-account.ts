@@ -76,6 +76,10 @@ export class BankAccount extends Entity {
     }, this.balance);
   }
 
+  public getLastTransaction(): Transaction {
+    return this.transactions[this.transactions.length - 1];
+  }
+
   public getTransactions(): ReadonlyArray<Transaction> {
     return this.transactions;
   }

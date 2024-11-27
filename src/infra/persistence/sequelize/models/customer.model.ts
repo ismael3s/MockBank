@@ -76,36 +76,49 @@ export class BankAccountModel extends Model {
   declare customer: CustomerModel;
 }
 
-// export class TransactionModel extends Model {
-//   @Column({
-//     primaryKey: true,
-//     type: 'uuid',
-//     allowNull: false,
-//   })
-//   id: string;
+@Table({
+  timestamps: true,
+  underscored: true,
+  tableName: 'transactions',
+  updatedAt: false,
+})
+export class TransactionModel extends Model {
+  @Column({
+    primaryKey: true,
+    type: 'uuid',
+    allowNull: false,
+  })
+  declare id: string;
 
-//   @Column
-//   @NotNull
-//   amount: number;
+  @Column({
+    allowNull: false,
+  })
+  declare amount: number;
 
-//   @Column({
-//     type: 'enum',
-//     values: [
-//       TransactionType.Deposit,
-//       TransactionType.Withdraw,
-//       TransactionType.Transfer,
-//     ],
-//   })
-//   @NotNull
-//   type: string;
+  @Column({
+    type: 'enum',
+    values: [
+      TransactionType.Deposit,
+      TransactionType.Withdraw,
+      TransactionType.Transfer,
+    ],
+    allowNull: false,
+  })
+  declare type: string;
 
-//   @Column({
-//     allowNull: true,
-//   })
-//   fromBankAccountId?: string;
+  @Column({
+    allowNull: false,
+  })
+  declare fromBankAccountId: string;
 
-//   @Column({
-//     allowNull: true,
-//   })
-//   toBankAccountId?: string;
-// }
+  @BelongsTo(() => BankAccountModel, 'fromBankAccountId')
+  fromBankAccount: BankAccountModel;
+
+  @Column({
+    allowNull: true,
+  })
+  declare toBankAccountId?: string;
+
+  @BelongsTo(() => BankAccountModel, 'toBankAccountId')
+  declare toBankAccount?: BankAccountModel;
+}

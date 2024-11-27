@@ -104,6 +104,21 @@ export class BankAccountRepository implements IBankAccountRepository {
         },
       },
     );
+
+    for (const transaction of bankAccount.getTransactions()) {
+      await this.sequelize.models.TransactionModel.create(
+        {
+          id: transaction.id,
+          amount: transaction.getAmount(),
+          type: transaction.getType(),
+          fromBankAccountId: bankAccount.id,
+          toBankAccountId: transaction.getTo()?.id,
+        },
+        {
+          ignoreDuplicates: true,
+        },
+      );
+    }
   }
 
   async findById(id: string): Promise<BankAccount | null> {

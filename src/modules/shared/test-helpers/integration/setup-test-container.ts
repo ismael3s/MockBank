@@ -1,29 +1,24 @@
+import { ConfigModule, registerAs } from '@nestjs/config';
 import { CqrsModule } from '@nestjs/cqrs';
+import { SequelizeModule } from '@nestjs/sequelize';
 import { Test } from '@nestjs/testing';
 import {
   PostgreSqlContainer,
   StartedPostgreSqlContainer,
 } from '@testcontainers/postgresql';
 import { Client } from 'pg';
-import { DataSource } from 'typeorm';
-import { ConfigModule, ConfigService, registerAs } from '@nestjs/config';
-import { SequelizeModule } from '@nestjs/sequelize';
+import { Sequelize } from 'sequelize';
 import {
   BankAccountModel,
   CustomerModel,
+  TransactionModel,
 } from 'src/infra/persistence/sequelize/models/customer.model';
-import { Sequelize } from 'sequelize';
 import { SequelizeStorage, Umzug } from 'umzug';
 
 let container: StartedPostgreSqlContainer;
 const cls = require('cls-hooked');
 const namespace = cls.createNamespace('my-very-own-namespace');
 Sequelize.useCLS(namespace);
-
-// const migrationsAndEntitiesPath = {
-//   entities: [__dirname + '/../../../../**/*.entity.ts'],
-//   migrations: [__dirname + '/../../../../**/migrations/*.ts'],
-// };
 
 const databaseName = 'mock_bank_test';
 
@@ -57,7 +52,7 @@ export class IntegrationTestHelpers {
             username: container.getUsername(),
             password: container.getPassword(),
             database: container.getDatabase(),
-            models: [CustomerModel, BankAccountModel],
+            models: [CustomerModel, BankAccountModel, TransactionModel],
             logging: false,
           }),
         ],
@@ -124,7 +119,7 @@ export class IntegrationTestHelpers {
         username: container.getUsername(),
         password: container.getPassword(),
         database: container.getDatabase(),
-        models: [CustomerModel, BankAccountModel],
+        models: [CustomerModel, BankAccountModel, TransactionModel],
         logging: false,
       }),
     ];
