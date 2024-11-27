@@ -9,7 +9,7 @@ export class TransactionDomainService {
       );
     if (amount <= 0)
       throw new Error('O valor do depósito deve ser maior que zero');
-    const transaction = Transaction.deposit(bankAccount, amount);
+    const transaction = Transaction.deposit(bankAccount.id, amount);
     bankAccount.addTransaction(transaction);
   }
 
@@ -22,7 +22,7 @@ export class TransactionDomainService {
       throw new Error('O valor do saque deve ser maior que zero');
     if (bankAccount.getBalance() < amount)
       throw new Error('Saldo insuficiente');
-    const transaction = Transaction.withdraw(bankAccount, amount);
+    const transaction = Transaction.withdraw(bankAccount.id, amount);
     bankAccount.addTransaction(transaction);
   }
 
@@ -38,7 +38,7 @@ export class TransactionDomainService {
     if (amount <= 0)
       throw new Error('O valor da transferência deve ser maior que zero');
     if (from.getBalance() < amount) throw new Error('Saldo insuficiente');
-    const transaction = Transaction.transfer(from, to, amount);
+    const transaction = Transaction.transfer(from.id, to.id, amount);
     from.addTransaction(transaction);
     to.addTransaction(transaction);
   }

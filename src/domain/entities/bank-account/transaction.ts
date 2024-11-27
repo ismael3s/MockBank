@@ -1,5 +1,6 @@
+import { uuidv7 } from 'uuidv7';
 import { Entity } from '../../abstractions/entity';
-import { BankAccount } from './bank-account';
+import { BankAccount, BankAccountStatus } from './bank-account';
 
 export enum TransactionType {
   Deposit = 'deposit',
@@ -14,34 +15,55 @@ export class Transaction extends Entity {
 
   private createdAt: Date;
 
-  private from?: BankAccount;
+  private from?: string;
 
-  private to?: BankAccount;
+  private to?: string;
 
   private constructor(
     type: TransactionType,
     amount: number,
-    from?: BankAccount,
-    to?: BankAccount,
+    from: string,
+    to?: string,
+    id: string = uuidv7(),
+    createdAt: Date = new Date(),
   ) {
-    super();
+    super(id);
     this.type = type;
     this.amount = amount;
-    this.createdAt = new Date();
+    this.createdAt = createdAt;
     this.from = from;
     this.to = to;
   }
 
-  public static deposit(from: BankAccount, amount: number): Transaction {
+  public static deposit(from: string, amount: number): Transaction {
     return new Transaction(TransactionType.Deposit, amount, from);
   }
 
-  public static withdraw(from: BankAccount, amount: number): Transaction {
+  public static withdraw(from: string, amount: number): Transaction {
     return new Transaction(TransactionType.Withdraw, amount, from);
   }
 
-  static transfer(from: BankAccount, to: BankAccount, amount: number) {
+  static transfer(from: string, to: string, amount: number) {
     return new Transaction(TransactionType.Transfer, amount, from, to);
+  }
+
+  public static restore(input: {
+    id: string;
+    type: TransactionType;
+    amount: number;
+    createdAt: Date;
+    from: string;
+    to?: string;
+  }): Transaction {
+    const transaction = new Transaction(
+      input.type,
+      input.amount,
+      input.from,
+      input.to,
+      input.id,
+      input.createdAt,
+    );
+    return transaction;
   }
 
   getCreatedAt() {

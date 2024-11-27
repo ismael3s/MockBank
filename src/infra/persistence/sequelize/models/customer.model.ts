@@ -74,6 +74,12 @@ export class BankAccountModel extends Model {
 
   @BelongsTo(() => CustomerModel)
   declare customer: CustomerModel;
+
+  @HasMany(() => TransactionModel, 'fromBankAccountId')
+  declare transactions: TransactionModel[];
+
+  @HasMany(() => TransactionModel, 'toBankAccountId')
+  declare transactionsTo: TransactionModel[];
 }
 
 @Table({

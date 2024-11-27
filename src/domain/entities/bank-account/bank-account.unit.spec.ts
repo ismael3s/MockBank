@@ -49,12 +49,12 @@ export class CustomerTestFixture {
   }
 
   static createDepositTransaction(bankAccount: BankAccount, amount: number) {
-    const transaction = Transaction.deposit(bankAccount, amount);
+    const transaction = Transaction.deposit(bankAccount.id, amount);
     bankAccount.addTransaction(transaction);
   }
 
   static createWithdrawnTransaction(bankAccount: BankAccount, amount: number) {
-    const transaction = Transaction.withdraw(bankAccount, amount);
+    const transaction = Transaction.withdraw(bankAccount.id, amount);
     bankAccount.addTransaction(transaction);
   }
 
@@ -63,7 +63,7 @@ export class CustomerTestFixture {
     to: BankAccount,
     amount: number,
   ) {
-    const transaction = Transaction.transfer(from, to, amount);
+    const transaction = Transaction.transfer(from.id, to.id, amount);
     from.addTransaction(transaction);
     to.addTransaction(transaction);
   }

@@ -100,4 +100,46 @@ describe('DepositInBankAccountCommandHandler', () => {
       to_bank_account_id: null,
     });
   });
+
+  test('Dado uma conta bancaria ativa, deve ser possível realizar um deposito 2', async () => {
+    const input = OpenAccountCommandHandlerFixture.openAccountCommand();
+    const { id: customerId } = await openAccountCommandHandler.execute(input);
+    const { id: bankAccountId } = await addAccountCommandHandler.execute(
+      new AddAccountCommand(customerId),
+    );
+
+    await sut.execute({
+      accountId: bankAccountId,
+      amount: 200,
+    });
+    const { balance, id } = await sut.execute({
+      accountId: bankAccountId,
+      amount: 200,
+    });
+
+    expect(balance).toBe(400);
+    const [[untypedResult]] = await sequelize.query(
+      `select id, type, amount, from_bank_account_id, to_bank_account_id
+            from transactions
+            where id = :id
+        `,
+      {
+        replacements: { id },
+      },
+    );
+    const result = untypedResult as {
+      id: string;
+      type: string;
+      amount: number;
+      from_bank_account_id: string;
+      to_bank_account_id?: string;
+    };
+    expect(result).toMatchObject({
+      id,
+      type: TransactionType.Deposit,
+      amount: '200',
+      from_bank_account_id: bankAccountId,
+      to_bank_account_id: null,
+    });
+  });
 });
