@@ -15,9 +15,11 @@ import { UnitOfWork } from './infra/persistence/sequelize/unit-of-work';
 import { CustomerRepository } from './infra/persistence/sequelize/repositories/customer.repository';
 import { BankAccountRepository } from './infra/persistence/sequelize/repositories/bank-account-repository';
 import { QueriesHandlers } from './application/queries';
+import { Logger, LoggerModule } from 'nestjs-pino';
 
 @Module({
   imports: [
+    LoggerModule.forRoot({}),
     ConfigModule.forRoot({
       isGlobal: true,
       load: [databaseConfig],
@@ -52,6 +54,10 @@ import { QueriesHandlers } from './application/queries';
     {
       provide: 'BankAccountRepository',
       useClass: BankAccountRepository,
+    },
+    {
+      provide: 'Logger',
+      useValue: Logger,
     },
   ],
   controllers: [AppController],

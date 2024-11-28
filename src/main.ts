@@ -7,12 +7,14 @@ import { Sequelize } from 'sequelize-typescript';
 import * as cls from 'cls-hooked';
 import { ApplicationExceptionFilter } from './api/filters/application-exception.filter';
 import { CatchEverythingFilter } from './api/filters/catch-everything-exception.filter';
+import { Logger } from 'nestjs-pino';
 const namespace = cls.createNamespace('mock_bank_cls');
 Sequelize.useCLS(namespace);
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const sequelize = app.get(Sequelize);
+  const logger = app.get(Logger);
   const httpAdapterHost = app.get(HttpAdapterHost);
   const umzug = new Umzug({
     migrations: {
@@ -25,8 +27,9 @@ async function bootstrap() {
   await umzug.up();
   app
     .useGlobalPipes(new ValidationPipe())
-    .useGlobalFilters(new CatchEverythingFilter(httpAdapterHost))
-    .useGlobalFilters(new ApplicationExceptionFilter());
+    .useGlobalFilters(new CatchEverythingFilter(httpAdapterHost, logger))
+    .useGlobalFilters(new ApplicationExceptionFilter())
+    .useLogger(logger);
   const config = new DocumentBuilder()
     .setTitle('MockBank')
     .setDescription('API para simular um banco')
