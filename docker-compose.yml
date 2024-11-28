@@ -1,7 +1,7 @@
 services:
   postgres:
     container_name: MockBank.Postgres
-    image: postgres:17
+    image: postgres:17-alpine
     ports:
       - '5432:5432'
     volumes:
@@ -10,3 +10,18 @@ services:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
       POSTGRES_DB: mock_bank
+  api:
+    container_name: MockBank.Api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3000:3000'
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_HOST: postgres
+      DATABASE_PORT: 5432
+      DATABASE_NAME: mock_bank
+      DATABASE_USER: root
+      DATABASE_PASSWORD: root

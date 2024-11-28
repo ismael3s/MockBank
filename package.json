@@ -1,10 +1,13 @@
 {
-  "name": "citynexus.people",
+  "name": "mock-bank",
   "version": "0.0.1",
   "description": "",
   "author": "",
   "private": true,
   "license": "UNLICENSED",
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "scripts": {
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
@@ -20,11 +23,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "test:unit": "jest .unit.spec.ts",
-    "test:integration": "jest .integration.spec.ts",
-    "typeorm": "ts-node ./node_modules/typeorm/cli",
-    "migration:run": "npm run typeorm migration:run -- -d ./src/infra/database/typeorm/datasource.ts",
-    "migration:run:final": "npm run typeorm migration:run -- -d ./dist/infra/database/typeorm/datasource.js",
-    "migration:generate": "npm run typeorm -- -d ./src/infra/database/typeorm/datasource.ts migration:generate ./src/infra/database/typeorm/migrations/$npm_config_name"
+    "test:integration": "jest .integration.spec.ts"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",

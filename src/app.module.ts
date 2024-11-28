@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { databaseConfig } from './infra/configs/database';
 import { HealthModule } from './infra/health/health.module';
 import { SequelizeModule } from '@nestjs/sequelize';
@@ -22,14 +22,18 @@ import { QueriesHandlers } from './application/queries';
       isGlobal: true,
       load: [databaseConfig],
     }),
-    SequelizeModule.forRoot({
-      dialect: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'root',
-      password: 'root',
-      database: 'mock_bank',
-      models: [CustomerModel, BankAccountModel, TransactionModel],
+    SequelizeModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        dialect: 'postgres',
+        host: configService.get('database.host'),
+        port: configService.get('database.port'),
+        username: configService.get('database.username'),
+        password: configService.get('database.password'),
+        database: configService.get('database.database'),
+        models: [CustomerModel, BankAccountModel, TransactionModel],
+        logging: false,
+      }),
     }),
     CqrsModule,
     HealthModule,
@@ -50,7 +54,6 @@ import { QueriesHandlers } from './application/queries';
       useClass: BankAccountRepository,
     },
   ],
-  // exports: [],
   controllers: [AppController],
 })
 export class AppModule {}

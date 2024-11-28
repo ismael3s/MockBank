@@ -7,7 +7,7 @@ import {
   StartedPostgreSqlContainer,
 } from '@testcontainers/postgresql';
 import { Client } from 'pg';
-import { Sequelize } from 'sequelize';
+import { Sequelize } from 'sequelize-typescript';
 import {
   BankAccountModel,
   CustomerModel,
@@ -58,14 +58,11 @@ export class IntegrationTestHelpers {
         ],
       }).compile();
 
-      const sequelize = new Sequelize(container.getConnectionUri(), {
-        dialect: 'postgres',
-        logging: false,
-      });
+      const sequelize = app.get(Sequelize);
 
       const umzug = new Umzug({
         migrations: {
-          glob: __dirname + '/../../../../**/migrations/*.js',
+          glob: __dirname + '/../../../**/migrations/*.js',
         },
         context: sequelize.getQueryInterface(),
         storage: new SequelizeStorage({ sequelize }),
