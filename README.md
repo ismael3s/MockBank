@@ -4,7 +4,7 @@ Projeto para simular o funcionamento básico de um banco.
 
 ## Ponto importante
 
-1. Para esse projeto na camada de application estamos referenciando pacotes do nestjs/cqrs e nestjs/common, decidi seguir dessa forma por considerar ser o mais pragmático, seguindo o Clean Arch by the book, o ideal seria isolar também a camada de application de dependências externas, porém com isso iriamos um esforço a mais para realizar a injeção de dependência
+1. Para esse projeto na camada de application estamos referenciando pacotes do nestjs/cqrs e nestjs/common, decidi seguir dessa forma por considerar ser o mais pragmático, seguindo o Clean Arch by the book, o ideal seria isolar também a camada de application de dependências externas, porém com isso iriamos ter um esforço a mais para realizar a injeção de dependência
 
 2. Deixei configurado as migrations serem executadas junto com a API para deixar mais pratico na hora de executar localmente.
 
