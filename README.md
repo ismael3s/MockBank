@@ -54,12 +54,10 @@ Alternativas que eu investiria tempo seria:
 
 ```sh
 npm run test:integration
-
-
+```
 
 ## O que eu mudaria nessa implementação?
 
 1. Para esse projeto deixa todas as pastas dentro da raiz do projeto, se fosse um projeto com um escopo maior avaliaria colocar em pasta de módulos e seguindo a estrutura proposta, com isso chegaríamos em um monólito modular.
 
-2. Separei as buscas em uma pasta de `queries` e dentro dela chamo o repository para trazer os dados do agregados e fazendo o calculo em memoria  do saldo da conta, em cenários onde existem diversas transações isso pode não ser o ideal, com isso iria para uma abordagem mais pragmática de deixar para os casos de apenas busca chamarem diretamente o SQL e deixando todo o calculo "pesado" para o banco de dados.
-```
+2. Separei as buscas em uma pasta de `queries` e dentro dela chamo o repository para trazer os dados do agregados e fazendo o calculo em memoria do saldo da conta, em cenários onde existem diversas transações isso pode não ser o ideal, com isso iria para uma abordagem mais pragmática de deixar para os casos de apenas busca chamarem diretamente o SQL e deixando todo o calculo "pesado" para o banco de dados.
