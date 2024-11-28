@@ -54,11 +54,11 @@ Requisitos Técnicos:
 2. Endpoints obrigatórios
 
    - Cliente
-     - POST /clientes - Criar um novo cliente.
-     - GET /clientes/:id - Obter informações de um cliente, incluindo suas contas.
+     - POST /clientes - Criar um novo cliente. - [x]
+     - GET /clientes/:id - Obter informações de um cliente, incluindo suas contas. - [x]
    - Conta Bancária
-     - POST /contas - Criar uma nova conta para um cliente.
-     - PATCH /contas/:id - Atualizar o status de uma conta (ativa/inativa).
+     - POST /contas - Criar uma nova conta para um cliente. - [x]
+     - PATCH /contas/:id - Atualizar o status de uma conta (ativa/inativa). - [ ]
      - GET /contas/:id - Obter informações de uma conta, incluindo movimentações.
    - Movimentações
      - POST /movimentacoes/deposito - Realizar um depósito.
@@ -98,7 +98,7 @@ Critérios de Avaliação:
 
 4. Funcionalidade
 
-   - Os endpoints atendem aos requisitos.
+   - Os endpoints atendem aEos requisitos.
    - O sistema respeita as regras do domínio (exemplo: saldo não negativo).
 
 5. Extras (Bônus)

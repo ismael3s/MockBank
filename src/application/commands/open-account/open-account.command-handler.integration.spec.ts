@@ -6,7 +6,7 @@ import { CustomerTestFixture } from 'src/domain/entities/bank-account/bank-accou
 import { CustomerRepository } from 'src/infra/persistence/sequelize/repositories/customer.repository';
 import { BankAccountRepository } from 'src/infra/persistence/sequelize/repositories/bank-account-repository';
 import { UnitOfWork } from 'src/infra/persistence/sequelize/unit-of-work';
-import { IntegrationTestHelpers } from 'src/modules/shared/test-helpers/integration/setup-test-container';
+import { IntegrationTestHelpers } from 'src/infra/test-helpers/integration/setup-test-container';
 import { OpenAccountCommand } from './open-account.command';
 import { OpenAccountCommandHandler } from './open-account.command-handler';
 

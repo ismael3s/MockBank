@@ -122,7 +122,7 @@ module.exports = {
     await queryInterface.addIndex('customers', ['document']);
   },
 
-  async down({ context: queryInterface, sequelize }) {
+  async down({ context: queryInterface }) {
     await queryInterface.removeIndex('customers', ['document']);
     await queryInterface.removeIndex('bank_accounts', ['number']);
     await queryInterface.removeColumn('bank_accounts', 'customer_id');

@@ -21,9 +21,9 @@ export class ChangeBankAccountStatusCommandHandler
       if (!bankAccount) throw new Error('Conta bancária não encontrada');
       if (command.status === 'active') {
         bankAccount.active();
-        return;
+      } else {
+        bankAccount.inactivate();
       }
-      bankAccount.inactivate();
       await this.bankAccountRepository.update(bankAccount);
     });
   }

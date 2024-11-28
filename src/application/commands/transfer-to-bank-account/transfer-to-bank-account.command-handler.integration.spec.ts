@@ -1,4 +1,4 @@
-import { IntegrationTestHelpers } from 'src/modules/shared/test-helpers/integration/setup-test-container';
+import { IntegrationTestHelpers } from 'src/infra/test-helpers/integration/setup-test-container';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Sequelize } from 'sequelize-typescript';
 import { UnitOfWork } from 'src/infra/persistence/sequelize/unit-of-work';

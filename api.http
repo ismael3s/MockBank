@@ -4,14 +4,68 @@ POST http://localhost:3000/clientes
 Content-Type: application/json
 
 {
-    "fullName": "John Doe",
-    "birthDate": "2000/05/12",
-    "document": "07242927560"
+    "fullName": "John Doe2",
+    "birthDate": "2000-05-12T00:00:00.000Z",
+    "document": "07487624005"
 }
 ###
 
-GET http://localhost:3000/clientes/01936623-f68a-75cd-9641-dc007a41c4e7
+# 01937005-01d3-73da-81e9-233b61a1f5c3
+GET http://localhost:3000/clientes/01937017-3e4e-7e34-ac6b-126185d44d14
 Content-Type: application/json
 
 
+###
+
+POST http://localhost:3000/contas
+Content-Type: application/json
+
+{
+    "customerId": "01937017-3e4e-7e34-ac6b-126185d44d14"
+}
+###
+
+PATCH http://localhost:3000/contas/01937017-3e4e-7e34-ac6b-12628dd21385
+Content-Type: application/json
+
+{
+    "status": "active"
+}
+###
+
+
+GET http://localhost:3000/contas/01937017-3e4e-7e34-ac6b-12628dd21385
+Content-Type: application/json
+
+###
+
+
+POST http://localhost:3000/movimentacoes/deposito
+Content-Type: application/json
+
+{
+    "bankAccountId": "01937017-3e4e-7e34-ac6b-12628dd21385",
+    "value": 500
+}
+###
+
+POST http://localhost:3000/movimentacoes/saque
+Content-Type: application/json
+
+{
+    "bankAccountId": "01937017-3e4e-7e34-ac6b-12628dd21385",
+    "value": 623
+}
+###
+
+
+
+POST http://localhost:3000/movimentacoes/transferencia
+Content-Type: application/json
+
+{
+    "fromBankAccountId": "01937017-3e4e-7e34-ac6b-12628dd21385",
+    "toBankAccountId": "0193703d-60ea-727b-8d7d-b324adabb119",
+    "value": 100
+}
 ###

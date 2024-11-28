@@ -1,4 +1,4 @@
-import { IntegrationTestHelpers } from 'src/modules/shared/test-helpers/integration/setup-test-container';
+import { IntegrationTestHelpers } from 'src/infra/test-helpers/integration/setup-test-container';
 import { AddAccountCommandHandler } from './add-account.command-handler';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Sequelize } from 'sequelize-typescript';

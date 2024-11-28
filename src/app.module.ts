@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { databaseConfig } from './infra/configs/database';
-import { HealthModule } from './modules/shared/health/health.module';
-import { TimersModule } from './modules/shared/timers/timers.module';
+import { HealthModule } from './infra/health/health.module';
 import { SequelizeModule } from '@nestjs/sequelize';
 import {
   BankAccountModel,
   CustomerModel,
+  TransactionModel,
 } from './infra/persistence/sequelize/models/customer.model';
 import { AppController } from './app.controller';
 import { CqrsModule } from '@nestjs/cqrs';
@@ -29,10 +29,9 @@ import { QueriesHandlers } from './application/queries';
       username: 'root',
       password: 'root',
       database: 'mock_bank',
-      models: [CustomerModel, BankAccountModel],
+      models: [CustomerModel, BankAccountModel, TransactionModel],
     }),
     CqrsModule,
-    TimersModule,
     HealthModule,
   ],
   providers: [
