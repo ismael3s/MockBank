@@ -3,6 +3,7 @@ import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
 import { IUnitOfWork } from 'src/application/abstractions/iunit-of-work.interface';
 import { IBankAccountRepository } from 'src/domain/entities/bank-account/ibank-account.repository.interface';
 import { ChangeBankAccountStatusCommand } from './change-bank-account-status-command';
+import { ApplicationError } from 'src/domain/exceptions/application-exception';
 
 @CommandHandler(ChangeBankAccountStatusCommand)
 export class ChangeBankAccountStatusCommandHandler
@@ -18,7 +19,8 @@ export class ChangeBankAccountStatusCommandHandler
   async execute(command: ChangeBankAccountStatusCommand): Promise<void> {
     await this.unitOfWork.transaction(async () => {
       const bankAccount = await this.bankAccountRepository.findById(command.id);
-      if (!bankAccount) throw new Error('Conta bancária não encontrada');
+      if (!bankAccount)
+        throw new ApplicationError('Conta bancária não encontrada');
       if (command.status === 'active') {
         bankAccount.active();
       } else {

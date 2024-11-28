@@ -4,6 +4,7 @@ import { IUnitOfWork } from 'src/application/abstractions/iunit-of-work.interfac
 import { Inject } from '@nestjs/common';
 import { TransactionDomainService } from 'src/domain/services/transaction.domain-service';
 import { IBankAccountRepository } from 'src/domain/entities/bank-account/ibank-account.repository.interface';
+import { ApplicationError } from 'src/domain/exceptions/application-exception';
 
 @CommandHandler(WithdrawFromBankAccountCommand)
 export class WithdrawFromBankAccountCommandHandler
@@ -30,7 +31,8 @@ export class WithdrawFromBankAccountCommandHandler
       const bankAccount = await this.bankAccountRepository.findById(
         command.accountId,
       );
-      if (!bankAccount) throw new Error('Conta bancária não encontrada');
+      if (!bankAccount)
+        throw new ApplicationError('Conta bancária não encontrada');
       TransactionDomainService.withdraw(bankAccount, command.amount);
       await this.bankAccountRepository.update(bankAccount);
       return {

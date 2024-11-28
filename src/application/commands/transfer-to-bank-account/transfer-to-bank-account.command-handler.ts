@@ -4,6 +4,7 @@ import { IUnitOfWork } from 'src/application/abstractions/iunit-of-work.interfac
 import { Inject } from '@nestjs/common';
 import { IBankAccountRepository } from 'src/domain/entities/bank-account/ibank-account.repository.interface';
 import { TransactionDomainService } from 'src/domain/services/transaction.domain-service';
+import { ApplicationError } from 'src/domain/exceptions/application-exception';
 
 @CommandHandler(TransferToBankAccountCommand)
 export class TransferToBankAccountCommandHandler
@@ -19,9 +20,9 @@ export class TransferToBankAccountCommandHandler
   async execute(command: TransferToBankAccountCommand) {
     return this.unitOfWork.transaction(async () => {
       const from = await this.bankAccountRepository.findById(command.from);
-      if (!from) throw new Error('Conta de origem não encontrada');
+      if (!from) throw new ApplicationError('Conta de origem não encontrada');
       const to = await this.bankAccountRepository.findById(command.to);
-      if (!to) throw new Error('Conta de destino não encontrada');
+      if (!to) throw new ApplicationError('Conta de destino não encontrada');
       TransactionDomainService.transfer(from, to, command.amount);
       await this.bankAccountRepository.update(from);
       await this.bankAccountRepository.update(to);

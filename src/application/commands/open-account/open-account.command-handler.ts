@@ -5,6 +5,7 @@ import { IBankAccountRepository } from 'src/domain/entities/bank-account/ibank-a
 import { Customer } from 'src/domain/entities/customer/customer';
 import { ICustomerRepository } from 'src/domain/entities/customer/icustomer.repository.interface';
 import { OpenAccountCommand } from './open-account.command';
+import { ApplicationError } from 'src/domain/exceptions/application-exception';
 
 @CommandHandler(OpenAccountCommand)
 export class OpenAccountCommandHandler
@@ -29,7 +30,7 @@ export class OpenAccountCommandHandler
       const customerAlreadyHaveAnAccount =
         await this.customerRepository.existsByDocument(customer.getDocument());
       if (customerAlreadyHaveAnAccount)
-        throw new Error('O cliente já possui uma conta');
+        throw new ApplicationError('O cliente já possui uma conta');
       await this.customerRepository.create(customer);
       for (const bankAccount of customer.getBankAccounts()) {
         await this.bankAccountRepository.create(bankAccount);

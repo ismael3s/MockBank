@@ -2,6 +2,7 @@ import { Inject } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { IBankAccountRepository } from 'src/domain/entities/bank-account/ibank-account.repository.interface';
 import { FindBankAccountQuery } from './find-bank-account-query';
+import { ApplicationError } from 'src/domain/exceptions/application-exception';
 
 @QueryHandler(FindBankAccountQuery)
 export class FindBankAccountQueryHandler
@@ -14,7 +15,8 @@ export class FindBankAccountQueryHandler
 
   async execute(query: FindBankAccountQuery): Promise<Output> {
     const bankAccount = await this.bankAccountRepository.findById(query.id);
-    if (!bankAccount) throw new Error('Conta bancária não encontrada');
+    if (!bankAccount)
+      throw new ApplicationError('Conta bancária não encontrada');
     return {
       id: bankAccount.id,
       balance: bankAccount.getBalance(),

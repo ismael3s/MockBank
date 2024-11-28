@@ -1,3 +1,5 @@
+import { ApplicationError } from '../exceptions/application-exception';
+
 export class Document {
   public readonly value: string;
 
@@ -12,15 +14,15 @@ export class Document {
 
   private validate(): void {
     if (!this.value || this.value.trim() === '') {
-      throw new Error('O CPF deve ser válido');
+      throw new ApplicationError('O CPF deve ser válido');
     }
 
     if (this.value.length < 11 || this.value.length > 14) {
-      throw new Error('O CPF deve ser válido');
+      throw new ApplicationError('O CPF deve ser válido');
     }
 
     if (!this.isValid(this.value)) {
-      throw new Error('O CPF deve ser válido');
+      throw new ApplicationError('O CPF deve ser válido');
     }
   }
 

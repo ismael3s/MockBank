@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { IQueryHandler, QueryHandler } from '@nestjs/cqrs';
 import { ICustomerRepository } from 'src/domain/entities/customer/icustomer.repository.interface';
 import { FindCustomerQuery } from './find-customer-query';
+import { ApplicationError } from 'src/domain/exceptions/application-exception';
 
 @QueryHandler(FindCustomerQuery)
 export class FindCustomerQueryHandler
@@ -14,7 +15,7 @@ export class FindCustomerQueryHandler
 
   async execute(query: FindCustomerQuery): Promise<any> {
     const customer = await this.customerRepository.findById(query.id);
-    if (!customer) throw new Error('Cliente não encontrado');
+    if (!customer) throw new ApplicationError('Cliente não encontrado');
     return new FindCustomerQueryOutput(
       customer.id,
       customer.getFullName().value,

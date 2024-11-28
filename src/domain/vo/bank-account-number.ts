@@ -1,4 +1,5 @@
 import { uuidv7 } from 'uuidv7';
+import { ApplicationError } from '../exceptions/application-exception';
 
 export class BankAccountNumber {
   public readonly value: string;
@@ -6,7 +7,7 @@ export class BankAccountNumber {
   constructor(value: string = uuidv7()) {
     this.value = value;
     if (!BankAccountNumber.isValid(value)) {
-      throw new Error('Número de conta bancária inválido');
+      throw new ApplicationError('Número de conta bancária inválido');
     }
   }
 

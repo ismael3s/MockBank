@@ -4,6 +4,7 @@ import { IUnitOfWork } from 'src/application/abstractions/iunit-of-work.interfac
 import { IBankAccountRepository } from 'src/domain/entities/bank-account/ibank-account.repository.interface';
 import { TransactionDomainService } from 'src/domain/services/transaction.domain-service';
 import { DepositInBankAccountCommand } from './deposit-in-bank-account-command';
+import { ApplicationError } from 'src/domain/exceptions/application-exception';
 
 @CommandHandler(DepositInBankAccountCommand)
 export class DepositInBankAccountCommandHandler
@@ -23,7 +24,8 @@ export class DepositInBankAccountCommandHandler
       const bankAccount = await this.bankAccountRepository.findById(
         command.accountId,
       );
-      if (!bankAccount) throw new Error('Conta bancária não encontrada');
+      if (!bankAccount)
+        throw new ApplicationError('Conta bancária não encontrada');
       TransactionDomainService.deposit(bankAccount, command.amount);
       await this.bankAccountRepository.update(bankAccount);
       return {

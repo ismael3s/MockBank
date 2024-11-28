@@ -1,3 +1,4 @@
+import { ApplicationError } from 'src/domain/exceptions/application-exception';
 import { Entity } from '../../abstractions/entity';
 import { BankAccountNumber } from '../../vo/bank-account-number';
 import { Customer } from '../customer/customer';
@@ -120,13 +121,13 @@ export class BankAccount extends Entity {
 
   public inactivate() {
     if (this.status === BankAccountStatus.Inactive)
-      throw new Error('Conta já está inativa');
+      throw new ApplicationError('Conta já está inativa');
     this.status = BankAccountStatus.Inactive;
   }
 
   public active() {
     if (this.status === BankAccountStatus.Active)
-      throw new Error('Conta já está ativa');
+      throw new ApplicationError('Conta já está ativa');
     this.status = BankAccountStatus.Active;
   }
 

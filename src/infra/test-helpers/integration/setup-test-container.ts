@@ -76,7 +76,7 @@ export class IntegrationTestHelpers {
       await umzug.up();
       await sequelize.close();
       await app.close();
-    }, 30_000);
+    }, 80_000);
 
     afterEach(async () => {
       await container.stop();

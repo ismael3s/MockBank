@@ -4,6 +4,7 @@ import { IBankAccountRepository } from 'src/domain/entities/bank-account/ibank-a
 import { ICustomerRepository } from 'src/domain/entities/customer/icustomer.repository.interface';
 import { AddAccountCommand } from './add-account-command';
 import { Inject } from '@nestjs/common';
+import { ApplicationError } from 'src/domain/exceptions/application-exception';
 
 type Output = {
   id: string;
@@ -27,7 +28,7 @@ export class AddAccountCommandHandler
       const customer = await this.customerRepository.findById(
         command.customerId,
       );
-      if (!customer) throw new Error('Cliente não encontrado');
+      if (!customer) throw new ApplicationError('Cliente não encontrado');
       const bankAccount = customer.addBankAccount();
       await this.bankAccountRepository.create(bankAccount);
       return { id: bankAccount.id };
