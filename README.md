@@ -8,6 +8,58 @@ Projeto para simular o funcionamento básico de um banco.
 
 2. Deixei configurado as migrations serem executadas junto com a API para deixar mais pratico na hora de executar localmente.
 
+## Estrutura explicada
+
+### Domain
+
+Dentro dessa pasta centralizei os Aggregate Root, Entities, Value Objects, Domain Service e definições dos Repositories.
+
+#### Quais foram as entidades?
+
+1. Customer
+2. BankAccount
+3. Transaction
+
+### Quais Foram os agregados?
+
+Identifiquei 2
+
+1. Customer
+2. BankAccount
+
+### Quais Foram os DomainService?
+
+Identifiquei apenas umas e o coloquei como `TransactionDomainService`, nele centralizei todas as regras necessárias para fazer transferências, sendo elas:
+
+1. Transações so podem ser feitas em contas bancarias ativas
+2. O valor do deposito deve ser maior do que zero
+3. O valor do saque deve ser maior do que zero e não pode deixar uma conta bancaria com saldo negativo
+4. Não pode realizar transferência para a mesma conta bancaria
+5. Não pode realizar transferências para outras contas onde o saldo da conta bancaria de origem fosse ficar negativado
+
+### Quais foram os repositórios?
+
+1. `ICustomerRepository`
+2. `IBankAccountRepository`
+
+Para as transações não foi necessário implementar um repository, pois esse padrão é utilizado para a persistência de agregados, ou seja, o repositorio do aggregate root deve lidar com demais inserções e atualizações de suas entidades relacionadas
+
+## Application
+
+Para essa camada segue levemente a ideia de 'use cases', porém utilizando o pacote `nestjs/cqrs`, gosto dessa abordagem pois ela isola cada ação que pode ocorrer no sistema e a deixa isolada.
+
+### Commands
+
+Para essa pasta ficaram todas ações que mutam dados
+
+### Queries
+
+Para essa pasta ficaram todas as açÕes que apenas buscam dados sem realizar nenhuma mutação
+
+## Infra
+
+Nessa pasta deixei centralizando as implementações das interfaces definidas nas camadas de application, e domain
+
 ## Executando o projeto - Docker
 
 Para executar o projeto deixei criado um `docker-compose` com isso basta executar:
@@ -58,6 +110,6 @@ npm run test:integration
 
 ## O que eu mudaria nessa implementação?
 
-1. Para esse projeto deixei todas as pastas dentro da raiz, se fosse um projeto com um escopo maior avaliaria colocar em pasta de módulos e seguindo a estrutura proposta, com isso chegaríamos em um monólito modular.
+1. Para esse projeto deixei todas as pastas dentro da raiz, se fosse um projeto com um escopo maior avaliaria colocar em pasta de módulos e seguindo a estrutura proposta.
 
-2. Separei as buscas em uma pasta de `queries` e dentro dela chamo o repository para trazer os dados do agregado, em cenários onde existem diversos recursos isso pode não ser o ideal, com isso iria para uma abordagem mais pragmática de deixar para os casos de apenas busca chamarem diretamente o banco, trazendo apenas os dados necessários e fazendo os cálculos necessários.
+2. Separei as buscas em uma pasta de `queries` e dentro dela chamo o repository para trazer os dados do agregado, em cenários onde existem diversos recursos isso pode não ser o ideal, com isso iria para uma abordagem mais pragmática de deixar para os casos de apenas busca chamarem diretamente o banco, trazendo apenas os dados necessários e fazendo os cálculos necessários no lado do banco de dados.
